@@ -12,6 +12,7 @@ defmodule TaskTracker.Repo.Migrations.CreateTasks do
 
       timestamps()
     end
+    create index(:tasks, [:title], unique: true)
 
   end
 end

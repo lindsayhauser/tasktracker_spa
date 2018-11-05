@@ -7,7 +7,7 @@ defmodule TaskTracker.Tasks.Task do
     field :title, :string, null: false
     field :desc, :string
     field :time_hours, :integer
-    field :time_mimutes, :integer
+    field :time_minutes, :integer
     field :completed, :boolean, default: false, null: false
 
     belongs_to :user, TaskTracker.Users.User
@@ -19,6 +19,7 @@ defmodule TaskTracker.Tasks.Task do
   def changeset(task, attrs) do
     task
     |> cast(attrs, [:title])
+    |> unique_constraint(:title)
     |> validate_required([:title])
   end
 end
