@@ -52,6 +52,16 @@ class Root extends React.Component {
     });
   }
 
+  deleteTask(id) {
+    if (window.confirm('Are you sure you wish to delete this item?')) {
+      alert(id);
+    }
+  }
+
+  edittask(id) {
+    alert(id);
+  }
+
   render() {
     return <div>
       <Router>
@@ -61,18 +71,19 @@ class Root extends React.Component {
             <Home />
           } />
           <Route path="/tasks" exact={true} render={() =>
-            <TaskList tasks={this.state.tasks} />
+            <TaskList root={this} tasks={this.state.tasks} />
           } />
           <Route path="/user" exact={true} render={() =>
             <UserList users={this.state.users} />
+          } />
+          <Route path="/edittask" exact={true} render={() =>
+            <UserList root={this} users={this.state.users} />
           } />
         </div>
       </Router>
     </div>;
   }
 }
-
-
 
 function Home(_props) {
   return <div className="row my-2">
@@ -86,9 +97,8 @@ function Home(_props) {
 }
 
 function TaskList(props) {
-  // console.log("++++++++++++++++++++++++++++=")
-  // console.log(props.tasks)
-  let rows = _.map(props.tasks, (tt) => <Task key={tt.id} task={tt} />);
+  let { root } = props;
+  let rows = _.map(props.tasks, (tt) => <Task key={tt.id} task={tt} root={root} />);
   return <div className="row">
     <div className="col-12">
       <br></br>
@@ -115,8 +125,7 @@ function TaskList(props) {
 }
 
 function Task(props) {
-  let { task } = props;
-
+  let { task, root } = props;
   return <tr>
     <td hidden={true}>{task.id}</td>
     <td>{task.title}</td>
@@ -125,10 +134,11 @@ function Task(props) {
     <td>{task.time_hours}</td>
     <td>{task.time_minutes}</td>
     <td>{task.completed ? "yes" : "no"}</td>
-    <td><button onClick={() => {alert(task.id)}}>Delete</button></td>
-    <td><button onClick={() => {alert(task.id)}}>Edit</button></td>
+    <td><Link to={"/tasks"} onClick={() => { root.deleteTask(task.id) }}>Delete</Link></td>
+    <td><Link to={"/register"}>Edit</Link></td>
   </tr>;
 }
+
 
 
 
