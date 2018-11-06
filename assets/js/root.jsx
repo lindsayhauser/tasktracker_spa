@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import $ from 'jquery';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom'
 import UserList from './user_list';
 import Header from './header';
 
 export default function root_init(node) {
-  // let tasks = window.tasks;
-  // let users = window.users;
-
   ReactDOM.render(<Root />, node);
 }
 
@@ -20,6 +18,8 @@ class Root extends React.Component {
       tasks: [],
       users: [],
       session: null,
+      editTask: null,
+      currTask: null
     };
     this.fetch_users();
     this.fetch_tasks();
@@ -45,7 +45,6 @@ class Root extends React.Component {
       contentType: "application/json; charset=UTF-8",
       data: "",
       success: (resp) => {
-        console.log(resp)
         let state1 = _.assign({}, this.state, { tasks: resp.data });
         this.setState(state1);
       }
@@ -58,8 +57,17 @@ class Root extends React.Component {
     }
   }
 
-  edittask(id) {
-    alert(id);
+  editTask(id) {
+    $.ajax("/api/v1/tasks/" + id, {
+      method: "get",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: "",
+      success: (task) => {
+        let state1 = _.assign({}, this.state, { currTask: task });
+        this.setState(state1);
+      }
+    });
   }
 
   render() {
@@ -77,7 +85,7 @@ class Root extends React.Component {
             <UserList users={this.state.users} />
           } />
           <Route path="/edittask" exact={true} render={() =>
-            <UserList root={this} users={this.state.users} />
+            <EditTask root={this} task={this.state.currTask} />
           } />
         </div>
       </Router>
@@ -135,8 +143,55 @@ function Task(props) {
     <td>{task.time_minutes}</td>
     <td>{task.completed ? "yes" : "no"}</td>
     <td><Link to={"/tasks"} onClick={() => { root.deleteTask(task.id) }}>Delete</Link></td>
-    <td><Link to={"/register"}>Edit</Link></td>
+    <td><Link to={"/edittask"} onClick={() => { root.editTask(task.id) }} >Edit</Link></td>
   </tr>;
+}
+
+function EditTask(props) {
+  let { root, task } = props;
+  alert("got here")
+
+  console.log(task);
+
+  if (task) {
+
+
+    return <div className="row">
+      <div className="col-12">
+        <br></br>
+        Edit Task:
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th hidden={true}>ID</th>
+              <th>Title</th>
+              <th>User Assigned</th>
+              <th>Description</th>
+              <th>Time Hours</th>
+              <th>Time Minutes</th>
+              <th>Completed?</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <input hidden={true}>{task.id} </input>
+            <input> {task.title} </input>
+            <input> {task.user_assigned} </input>
+            <input> {task.desc} </input>
+            <input> {task.time_hours} </input>
+            <input> {task.time_minutes} </input>
+            <input> {task.completed ? "yes" : "no"} </input>
+          </tbody>
+        </table>
+      </div>
+    </div>;
+  }
+  else {
+    <Redirect to={"/edittask"} />
+    return <div>
+    </div>;
+
+  }
 }
 
 
