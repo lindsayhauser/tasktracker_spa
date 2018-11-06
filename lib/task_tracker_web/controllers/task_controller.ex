@@ -7,7 +7,12 @@ defmodule TaskTrackerWeb.TaskController do
   action_fallback TaskTrackerWeb.FallbackController
 
   def index(conn, _params) do
-    tasks = Tasks.list_tasks()
+    IO.puts("got here in the tasks controller")
+
+    tasks = TaskTracker.Tasks.list_tasks()
+    |> Enum.map(&(Map.take(&1, [:id, :title, :desc, :time_hours, :time_minutes,
+      :completed, :user])))
+
     render(conn, "index.json", tasks: tasks)
   end
 

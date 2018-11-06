@@ -1,61 +1,32 @@
-<!-- //TODO cleanup
-// Used Nat Tuck's Lecture Notes as Reference
-// http://www.ccs.neu.edu/home/ntuck/courses/2018/09/cs4550/notes/10-crud/notes.html -->
-
+<!-- Used Reference: https://github.com/NatTuck/husky_shop_spa/blob/4-pages/lib/husky_shop_web/templates/layout/app.html.eex -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>TaskTracker · Phoenix Framework</title>
-    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <title>HuskyShop · Phoenix Framework</title>
+    <link rel="stylesheet" href="<%= Routes.static_url(@conn, "/css/app.css") %>"/>
   </head>
-
   <body>
     <div class="container">
-      <nav class="navbar navbar-expand-sm navbar-light bg-white">
-        <div class="col-4">
-          <a class="navbar-brand" href="/">Task Tracker</a>
+      <%= if get_flash(@conn, :info) || get_flash(@conn, :error) do %>
+        <div class="row">
+          <div class="col-12">
+            <%= if get_flash(@conn, :info) do %>
+              <p class="alert alert-info" role="alert">
+                <%= get_flash(@conn, :info) %></p>
+            <% end %>
+            <%= if get_flash(@conn, :error) do %>
+              <p class="alert alert-danger" role="alert">
+                <%= get_flash(@conn, :error) %></p>
+            <% end %>
+          </div>
         </div>
-        <div class="col-4">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/tasks">Tasks</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/users/">Users</a>
-            </li>
-
-          </ul>
-        </div>
-
-        <div>
-
-
-        </div>
-
-
-
-      </nav>
-
-      <div class="row">
-        <div class="col-12">
-          <%= if get_flash(@conn, :info) do %>
-            <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-          <% end %>
-          <%= if get_flash(@conn, :error) do %>
-            <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-          <% end %>
-        </div>
-      </div>
-
+      <% end %>
       <%= render @view_module, @view_template, assigns %>
     </div>
-
-    <script type="text/javascript" src="<%= Routes.static_url(@conn, "/js/app.js") %>"></script>
+    <script type="text/javascript" src="<%= Routes.static_url(@conn, "/js/app.js") %>">
+    </script>
   </body>
 </html>
