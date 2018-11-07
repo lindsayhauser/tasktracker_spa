@@ -2,7 +2,7 @@
 
 ## Design choices:
 
-Example Users in App: http://tasks3.lindsayhauser.com/
+Example Users in App: https://tasks3.lindsayhauser.com/
   * `alice@example.com` with password `pass1`
 
 UI Design:

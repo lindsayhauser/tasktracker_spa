@@ -15,7 +15,7 @@ config :task_tracker, TaskTrackerWeb.Endpoint,
   server: true,
   root: ".",
   version: Application.spec(:phoenix_distillery, :vsn),
-  http: [:inet6, port: System.get_env("PORT") || 4000],
+  https: [:inet6, port: System.get_env("PORT") || 4000],
   url: [host: "tasks3.lindsayhauser.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
