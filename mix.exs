@@ -43,7 +43,8 @@ defmodule TaskTracker.MixProject do
     {:jason, "~> 1.0"},
     {:plug_cowboy, "~> 2.0"},
     {:comeonin, "~> 4.1"},
-    {:argon2_elixir, "~> 1.3"}
+    {:argon2_elixir, "~> 1.3"},
+    {:distillery, "~> 2.0"}
     ]
   end
 
