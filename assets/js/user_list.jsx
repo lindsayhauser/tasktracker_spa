@@ -1,7 +1,8 @@
 // User jsx
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default function UserList(props) {
+function UserList(props) {
     let { root } = props;
     console.log(root.state.session)
     if (root.state.session) {
@@ -35,3 +36,5 @@ function User(props) {
         <td>{user.admin ? "yes" : "no"}</td>
     </tr>;
 }
+
+export default connect((state) => {return {users: state.users};})(UserList);
