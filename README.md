@@ -7,9 +7,10 @@ Example Users in App: http://tasks3.lindsayhauser.com/
 
 UI Design:
 
-Registering Users:
+Registering Users / Login:
   * When registering a user, you need to input an email and a password
   * Emails are unique - this means you cannot have two users with the same email. If you attempt to do this, the second person who attemps to register with the same email will be prohibited from doing so.
+  * When a user has not logged in yet, they are unable to see tasks or users. However, they can log in given the login bar at the top of the page, or they can register on the home page. Once the user has logged in, the registration link disapears and a logout button appears.
 
 Creating Tasks:
   * When creating a new tasks, you can enter the title, description, select a user (from a dropdown) and enter the time hours and minutes spent of the task and then mark the task as completed.

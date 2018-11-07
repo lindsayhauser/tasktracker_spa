@@ -11,7 +11,12 @@ export default function Header(props) {
         session_view = <div className="form-inline my-2">
             <input id="login-email" type="email" placeholder="email" />
             <input id="login-pass" type="password" placeholder="password" />
-            <button className="btn btn-secondary" onClick={() => {root.create_session($('#login-email').val(), $('#login-pass').val())}}>Login</button>
+            <button className="btn btn-secondary" onClick={() => { root.create_session($('#login-email').val(), $('#login-pass').val()) }}>Login</button>
+        </div>;
+    } else {
+        session_view = <div className="form-inline my-2">
+            <h5> <div className="col-1"> Welcome: {root.state.session.user_email}</div></h5>
+            <div className="col-1"><button className="btn btn-secondary" onClick={() => { root.endSession() }}>Logout</button></div>
         </div>;
     }
 
@@ -25,9 +30,8 @@ export default function Header(props) {
         <div className="form-inline row my-2 col-1">
             <p><Link to={"/user"} onClick={root.fetch_users.bind(root)}>Users</Link></p>
         </div>
-        <div className="col-6">
+        <div className="col-6 float-right">
             {session_view}
         </div>
-        }
     </div>
 }

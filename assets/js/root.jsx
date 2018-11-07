@@ -6,7 +6,9 @@ import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import { Redirect } from 'react-router-dom'
 import UserList from './user_list';
 import Header from './header';
-
+import TaskList from './task_list'
+import Home from './home_nav'
+import Register from './register_user'
 
 export default function root_init(node) {
   ReactDOM.render(<Root />, node);
@@ -21,6 +23,7 @@ class Root extends React.Component {
       session: null,
       currTask: null
     };
+  this.fetch_users();
   }
 
   fetch_users() {
@@ -58,6 +61,30 @@ class Root extends React.Component {
       success: (resp) => {
         let state1 = _.assign({}, this.state, { session: resp.data });
         this.setState(state1);
+      }
+    });
+  }
+
+  endSession() {
+    let state1 = _.assign({}, this.state, { session: null });
+    this.setState(state1);
+  }
+
+  create_user(email, password) {
+    let text = JSON.stringify({
+      user: {
+        email: email,
+        password: password
+      }
+    });
+
+    $.ajax("/api/v1/users", {
+      method: "post",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: text,
+      success: (resp) => {
+        this.create_session(email, password)
       }
     });
   }
@@ -171,76 +198,13 @@ class Root extends React.Component {
           <Route path="/newtask" exact={true} render={() =>
             <NewTask root={this} />
           } />
+          <Route path="/register" exact={true} render={() =>
+            <Register root={this} />
+          } />
         </div>
       </Router>
     </div>;
   }
-}
-
-function Home(props) {
-  let { root } = props;
-  if (root.state.session) {
-    return <div className="row my-2">
-      <div className="col-9">
-        <h1>Welcome to TaskTracker</h1>
-      </div>
-    </div>
-  } else {
-    return <div className="row my-2">
-    <div className="col-9">
-      <h1>Welcome to TaskTracker</h1>
-      <p><Link to={"/register"}>Register</Link></p>
-    </div>
-  </div>
-  }
-}
-
-function TaskList(props) {
-  let { root } = props;
-  if (root.state.session) {
-    let rows = _.map(props.tasks, (tt) => <Task key={tt.id} task={tt} root={root} />);
-    return <div className="row">
-      <div className="col-12">
-        <br></br>
-        <h2>List of Tasks:</h2>
-        <div><Link to={"/newtask"} className="btn btn-primary">Create New Task</Link></div>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th hidden={true}>ID</th>
-              <th>Title</th>
-              <th>User Assigned</th>
-              <th>Description</th>
-              <th>Time Hours</th>
-              <th>Time Minutes</th>
-              <th>Completed?</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows}
-          </tbody>
-        </table>
-      </div>
-    </div>;
-  } else {
-    return <div> You Must Login To See Tasks! </div>
-  }
-}
-
-function Task(props) {
-  let { task, root } = props;
-  return <tr>
-    <td>{task.title}</td>
-    <td>{task.user_assigned}</td>
-    <td>{task.desc}</td>
-    <td>{task.time_hours}</td>
-    <td>{task.time_minutes}</td>
-    <td>{task.completed ? "yes" : "no"}</td>
-    <td><Link to={"/edittask"} className="btn btn-primary" onClick={() => { root.editTask(task.id) }} >Edit</Link></td>
-    <td><Link to={"/tasks"} className="btn btn-secondary" onClick={() => { root.deleteTask(task.id) }}>Delete</Link></td>
-  </tr>;
 }
 
 function EditTask(props) {
@@ -272,7 +236,7 @@ function EditTask(props) {
               </td>
               <td><input id="descBoc" defaultValue={task.data.desc} /></td>
               <td><input id="hoursBox" defaultValue={task.data.time_hours} /></td>
-              <td><input id="minutesBox" defaultValue={task.data.time_minutes} /></td>
+              <td><input id="minutesBox" step="15" type="number" defaultValue={task.data.time_minutes} /></td>
               <td><input id="completedBox" type="checkbox" defaultChecked={task.data.completed} /></td>
             </tr>
           </tbody>
@@ -285,7 +249,6 @@ function EditTask(props) {
     <Redirect to={"/edittask"} />
     return <div>
     </div>;
-
   }
 }
 
@@ -317,7 +280,7 @@ function NewTask(props) {
             </td>
             <td><input id="descBoc" /></td>
             <td><input id="hoursBox" /></td>
-            <td><input id="minutesBox" /></td>
+            <td><input id="minutesBox" step="15" type="number"/></td>
             <td><input id="completedBox" type="checkbox" defaultChecked={false} /></td>
           </tr>
         </tbody>
