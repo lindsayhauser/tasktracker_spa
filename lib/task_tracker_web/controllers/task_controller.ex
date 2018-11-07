@@ -30,8 +30,12 @@ defmodule TaskTrackerWeb.TaskController do
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do
+    IO.puts("GOT HERER IN THE UPDATE CONTROLLER")
     task = Tasks.get_task!(id)
 
+    IO.inspect(task)
+    IO.inspect(task_params)
+    IO.puts("Got to get the task")
     with {:ok, %Task{} = task} <- Tasks.update_task(task, task_params) do
       render(conn, "show.json", task: task)
     end

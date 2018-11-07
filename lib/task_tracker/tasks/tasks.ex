@@ -73,6 +73,9 @@ defmodule TaskTracker.Tasks do
 
   """
   def update_task(%Task{} = task, attrs) do
+
+    IO.puts("Got to the DB level")
+
     task
     |> Task.changeset(attrs)
     |> Repo.update()
