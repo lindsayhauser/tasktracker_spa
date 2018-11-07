@@ -78,8 +78,38 @@ class Root extends React.Component {
       contentType: "application/json; charset=UTF-8",
       data: text,
       success: (resp) => {
-        let state1 = _.assign({}, this.state, { tasks: resp.data });
-        this.setState(state1);
+      }
+    });
+  }
+
+  newTask() {
+    alert("new task!!")
+    let title = $('#titleBox').val()
+    let user = $('#userBox').val()
+    let description = $('#descBoc').val()
+    let hours = $('#hoursBox').val()
+    let min = $('#minutesBox').val()
+    let compl = "false"
+    if ($('#completedBox').is(":checked")) { compl = "true" }
+
+    let text = JSON.stringify({
+      task: {
+        title: title,
+        user_id: user,
+        desc: description,
+        time_hours: hours,
+        time_minutes: min,
+        completed: compl
+      }
+    });
+
+    $.ajax("/api/v1/tasks", {
+      method: "post",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: text,
+      success: (resp) => {
+
       }
     });
   }
@@ -92,8 +122,6 @@ class Root extends React.Component {
         contentType: "application/json; charset=UTF-8",
         data: "",
         success: (task) => {
-          let state1 = _.assign({}, this.state, { currTask: task });
-          this.setState(state1);
         }
       });
     }
@@ -129,6 +157,9 @@ class Root extends React.Component {
           <Route path="/edittask" exact={true} render={() =>
             <EditTask root={this} task={this.state.currTask} />
           } />
+          <Route path="/newtask" exact={true} render={() =>
+            <NewTask root={this} />
+          } />
         </div>
       </Router>
     </div>;
@@ -150,8 +181,9 @@ function TaskList(props) {
   return <div className="row">
     <div className="col-12">
       <br></br>
-      List of Tasks:
-        <table className="table table-striped">
+      <h2>List of Tasks:</h2>
+      <div><Link to={"/newtask"} className="btn btn-primary">Create New Task</Link></div>
+      <table className="table table-striped">
         <thead>
           <tr>
             <th hidden={true}>ID</th>
@@ -176,7 +208,6 @@ function TaskList(props) {
 function Task(props) {
   let { task, root } = props;
   return <tr>
-    <td hidden={true}>{task.id}</td>
     <td>{task.title}</td>
     <td>{task.user_assigned}</td>
     <td>{task.desc}</td>
@@ -233,6 +264,45 @@ function EditTask(props) {
 
   }
 }
+
+function NewTask(props) {
+  let { root } = props;
+
+  return <div className="row">
+    <div className="col-12">
+      <br></br>
+      <h2>Create New Task:</h2>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>Title (Required)</th>
+            <th>User Assigned</th>
+            <th>Description</th>
+            <th>Time Hours</th>
+            <th>Time Minutes</th>
+            <th>Completed?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input id="titleBox" /></td>
+            <td><select id="userBox"  >
+              {root.state.users.map(uu =>
+                <option key={uu.id} value={uu.id}>{uu.email}</option>
+              )};</select>
+            </td>
+            <td><input id="descBoc" /></td>
+            <td><input id="hoursBox" /></td>
+            <td><input id="minutesBox" /></td>
+            <td><input id="completedBox" type="checkbox" defaultChecked={false} /></td>
+          </tr>
+        </tbody>
+      </table>
+      <button className="btn btn-primary" onClick={() => { root.newTask() }}> Create Task </button>
+    </div>
+  </div>;
+}
+
 
 
 
