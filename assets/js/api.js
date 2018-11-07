@@ -29,6 +29,10 @@ class TheServer {
                 type: 'TASK_LIST',
                 data: resp.data,
             })
+            store.dispatch({
+                type: 'UPDATE_CURRENT_TASK',
+                data: null
+            })
           }
         });
     }

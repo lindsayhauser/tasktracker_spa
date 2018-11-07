@@ -45,8 +45,10 @@ function session(state = null, action) {
 }
 
 function currTask(state = null, action) {
+    
     switch (action.type) {
         case 'UPDATE_CURRENT_TASK':
+        console.log("updating", action.data)
             return action.data;
         default:
             return state;

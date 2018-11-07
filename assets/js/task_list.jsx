@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import api from './api'
 
 function TaskList(props) {
+  // api.fetch_tasks();
   let { tasks, session } = props;
   if (session) {
     let rows = _.map(tasks, (tt) => <Task key={tt.id} task={tt} />);
