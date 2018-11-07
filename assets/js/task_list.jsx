@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import api from './api'
 
 function TaskList(props) {
-  let { tasks, root, dispatch } = props;
-  if (root.state.session) {
+  let { tasks, root, dispatch, session } = props;
+  if (session) {
     let rows = _.map(tasks, (tt) => <Task key={tt.id} dispatch={dispatch}
       task={tt} root={root} />);
     return <div className="row">
@@ -67,7 +67,8 @@ function state2props(state) {
   console.log("rerender", state);
   return {
     tasks: state.tasks,
-    currTask: state.currTask
+    currTask: state.currTask,
+    session: state.session
   };
 }
 

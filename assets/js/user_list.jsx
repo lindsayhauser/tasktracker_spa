@@ -3,9 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 function UserList(props) {
-    let { root } = props;
-    console.log(root.state.session)
-    if (root.state.session) {
+    let { root, session } = props;
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
+    console.log(props)
+    if (session) {
         let rows = _.map(props.users, (uu) => <User key={uu.id} user={uu} />);
         return <div className="row">
             <div className="col-12">
@@ -37,4 +38,4 @@ function User(props) {
     </tr>;
 }
 
-export default connect((state) => {return {users: state.users};})(UserList);
+export default connect((state) => {return {users: state.users, session: state.session};})(UserList);

@@ -3,26 +3,6 @@ import store from './store';
 // API calls
 class TheServer {
 
-    // fetch_path(path, callback) {
-    //     $.ajax(path, {
-    //         method: "get",
-    //         dataType: "json",
-    //         contentType: "application/json; charset=UTF-8",
-    //         data: "",
-    //         success: callback,
-    //     });
-    // }
-
-    // send_post(path, data, callback) {
-    //     $.ajax(path, {
-    //         method: "post",
-    //         dataType: "json",
-    //         contentType: "application/json; charset=UTF-8",
-    //         data: JSON.stringify(data),
-    //         success: callback,
-    //     });
-    // }
-
     fetch_users() {
         $.ajax("/api/v1/users", {
           method: "get",
@@ -62,23 +42,12 @@ class TheServer {
           data: JSON.stringify({ email, password }),
           success: (resp) => {
             store.dispatch({
-                type: 'NEW SESSION',
+                type: 'NEW_SESSION',
                 data: resp.data
             })
           }
         });
       }
-
-    // create_session(email, password) {
-    //     this.send_post("/api/v1/sessions",
-    //         { email, password },
-    //         (resp) => {
-    //             store.dispatch({
-    //                 type: 'NEW SESSION',
-    //                 data: resp.data
-    //             })
-    //         });
-    // }
 
     endSession() {
         store.dispatch({
@@ -86,7 +55,6 @@ class TheServer {
             data: null
         })
     }
-
 
     create_user(email, password) {
         let text = JSON.stringify({
@@ -106,14 +74,6 @@ class TheServer {
           }
         });
       }
-
-    // create_user(email, password) {
-    //     this.send_post("/api/v1/users",
-    //         { email, password },
-    //         (resp) => {
-    //             this.create_session(email, password)
-    //         })
-    // }
 
     saveTask(id) {
         let title = $('#titleBox').val()
@@ -201,7 +161,7 @@ class TheServer {
             success: (task) => {
                 store.dispatch({
                     type: 'UPDATE_CURRENT_TASK',
-                    data: task
+                    data: task.data
                 })
             }
         });
