@@ -22,6 +22,7 @@ export default function root_init(node, store) {
 class Root extends React.Component {
   constructor(props) {
     super(props);
+    api.fetch_tasks()
   }
 
   render() {
