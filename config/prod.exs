@@ -108,8 +108,8 @@ config :task_tracker, TaskTracker.Repo,
   username: "task_tracker3",
   password: get_secret.("db_pass"),
   database: "task_tracker_prod3",
-  pool_size: 15
-, TaskTrackerWeb.Endpoint,
+  pool_size: 15,
+  TaskTrackerWeb.Endpoint,
   http: [:inet6, port: System.get_env("PORT") || 4000],
   url: [host: "tasks3.lindsayhauser.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
