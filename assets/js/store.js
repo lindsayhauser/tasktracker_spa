@@ -1,3 +1,5 @@
+// Used Nat Tuck's Lecture Notes as Reference:
+// http://www.ccs.neu.edu/home/ntuck/courses/2018/09/cs4550/notes/18-redux/notes.html
 import { createStore, combineReducers } from 'redux';
 import deepFreeze from 'deep-freeze';
 
@@ -32,7 +34,6 @@ function users(state = [], action) {
 }
 
 function session(state = null, action) {
-    console.log("got to new session")
     switch (action.type) {
         case 'NEW_SESSION':
             return action;
@@ -53,12 +54,9 @@ function currTask(state = null, action) {
 }
 
 function root_reducer(state0, action) {
-    console.log("reducer", state0, action);
 
     let reducer = combineReducers({ tasks, users, session, currTask });
     let state1 = reducer(state0, action);
-
-    console.log("reducer1", state1);
 
     return deepFreeze(state1);
 }

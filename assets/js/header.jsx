@@ -6,8 +6,7 @@ import api from './api';
 import { connect } from 'react-redux';
 
 function Header(props) {
-    let { root, session } = props;
-    console.log(session)
+    let { session } = props;
     let session_view;
     if (!session) {
         session_view = <div className="form-inline my-2">
@@ -38,9 +37,4 @@ function Header(props) {
     </div>
 }
 
-const mapStateToProps = state => {
-    return {
-      session: state.session
-    };
-  };
-  export default connect(mapStateToProps)(Header);
+export default connect((state) => { return { session: state.session }; })(Header);

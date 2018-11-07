@@ -5,10 +5,9 @@ import { connect } from 'react-redux';
 import api from './api'
 
 function TaskList(props) {
-  let { tasks, root, dispatch, session } = props;
+  let { tasks, session } = props;
   if (session) {
-    let rows = _.map(tasks, (tt) => <Task key={tt.id} dispatch={dispatch}
-      task={tt} root={root} />);
+    let rows = _.map(tasks, (tt) => <Task key={tt.id} task={tt} />);
     return <div className="row">
       <div className="col-12">
         <br></br>
@@ -40,16 +39,7 @@ function TaskList(props) {
 }
 
 function Task(props) {
-  let { task, root, dispatch } = props;
-
-  // function count_changed(ev) {
-  //   let action = {
-  //     type: 'TASK_LIST',
-  //     product_id: product.id,
-  //     count: ev.target.value,
-  //   };
-  //   dispatch(action);
-  // }
+  let { task } = props;
 
   return <tr>
     <td>{task.title}</td>
@@ -64,7 +54,6 @@ function Task(props) {
 }
 
 function state2props(state) {
-  console.log("rerender", state);
   return {
     tasks: state.tasks,
     currTask: state.currTask,
@@ -72,5 +61,4 @@ function state2props(state) {
   };
 }
 
-// Export result of curried function call.
 export default connect(state2props)(TaskList);

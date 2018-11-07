@@ -1,25 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import $ from 'jquery';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import { Redirect } from 'react-router-dom'
-import UserList from './user_list';
-import Header from './header';
-import TaskList from './task_list'
-import Home from './home_nav'
-import Register from './register_user'
-import { Provider } from 'react-redux';
 import api from './api';
 import { connect } from 'react-redux';
 
 
 function EditTask(props) {
-    console.log("=======================")
-    console.log(props)
 
-    let { root, currTask, users } = props;
-
+    let { currTask, users } = props;
     if (currTask) {
         return <div className="row">
             <div className="col-12">
