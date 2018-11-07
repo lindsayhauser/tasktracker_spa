@@ -35,7 +35,9 @@ function session(state = null, action) {
     console.log("got to new session")
     switch (action.type) {
         case 'NEW_SESSION':
-            return action
+            return action;
+        case 'END_SESSION':
+            return null;
         default:
             return state;
     }

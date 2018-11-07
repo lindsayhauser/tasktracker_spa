@@ -28,7 +28,6 @@ class TheServer {
             store.dispatch({
                 type: 'TASK_LIST',
                 data: resp.data,
-                // currTask:   ///NOT sure how to get this one to work.
             })
           }
         });
@@ -51,7 +50,7 @@ class TheServer {
 
     endSession() {
         store.dispatch({
-            type: 'NEW SESSION',
+            type: 'END_SESSION',
             data: null
         })
     }
@@ -101,7 +100,11 @@ class TheServer {
             dataType: "json",
             contentType: "application/json; charset=UTF-8",
             data: text,
-            success: (resp) => {
+            success: () => {
+                store.dispatch({
+                    type: 'UPDATE_CURRENT_TASK',
+                    data: null
+                })
                 this.fetch_tasks();
             }
         });

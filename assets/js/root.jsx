@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import $ from 'jquery';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
-import { Redirect } from 'react-router-dom'
 import UserList from './user_list';
 import Header from './header';
 import TaskList from './task_list'
@@ -12,6 +10,7 @@ import Register from './register_user'
 import { Provider } from 'react-redux';
 import api from './api';
 import EditTask from './edit_task'
+import NewTask from './new_task'
 
 export default function root_init(node, store) {
   ReactDOM.render(
@@ -35,19 +34,19 @@ class Root extends React.Component {
         <div>
           <Header root={this} />
           <Route path="/" exact={true} render={() =>
-            <Home root={this} />
+            <Home />
           } />
           <Route path="/tasks" exact={true} render={() =>
-            <TaskList root={this} tasks={this.state.tasks} />
+            <TaskList  />
           } />
           <Route path="/user" exact={true} render={() =>
-            <UserList root={this} users={this.state.users} />
+            <UserList  />
           } />
           <Route path="/edittask" exact={true} render={() =>
-            <EditTask root={this} />
+            <EditTask  />
           } />
           <Route path="/newtask" exact={true} render={() =>
-            <NewTask root={this} />
+            <NewTask  />
           } />
           <Route path="/register" exact={true} render={() =>
             <Register root={this} />
@@ -105,44 +104,44 @@ class Root extends React.Component {
 //   }
 // }
 
-function NewTask(props) {
-  let { root } = props;
+// function NewTask(props) {
+//   let { root } = props;
 
-  return <div className="row">
-    <div className="col-12">
-      <br></br>
-      <h2>Create New Task:</h2>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Title (Required)</th>
-            <th>User Assigned</th>
-            <th>Description</th>
-            <th>Time Hours</th>
-            <th>Time Minutes</th>
-            <th>Completed?</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><input id="titleBox" /></td>
-            <td><select id="userBox"  >
-              {root.state.users.map(uu =>
-                <option key={uu.id} value={uu.id}>{uu.email}</option>
-              )};</select>
-            </td>
-            <td><input id="descBoc" /></td>
-            <td><input id="hoursBox" /></td>
-            <td><input id="minutesBox" step="15" type="number" /></td>
-            <td><input id="completedBox" type="checkbox" defaultChecked={false} /></td>
-          </tr>
-        </tbody>
-      </table>
-      <div><Link to={"/tasks"} className="btn btn-primary"
-        onClick={() => { root.newTask() }}>Create Task</Link></div>
-    </div>
-  </div>;
-}
+//   return <div className="row">
+//     <div className="col-12">
+//       <br></br>
+//       <h2>Create New Task:</h2>
+//       <table className="table table-striped">
+//         <thead>
+//           <tr>
+//             <th>Title (Required)</th>
+//             <th>User Assigned</th>
+//             <th>Description</th>
+//             <th>Time Hours</th>
+//             <th>Time Minutes</th>
+//             <th>Completed?</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           <tr>
+//             <td><input id="titleBox" /></td>
+//             <td><select id="userBox"  >
+//               {root.state.users.map(uu =>
+//                 <option key={uu.id} value={uu.id}>{uu.email}</option>
+//               )};</select>
+//             </td>
+//             <td><input id="descBoc" /></td>
+//             <td><input id="hoursBox" /></td>
+//             <td><input id="minutesBox" step="15" type="number" /></td>
+//             <td><input id="completedBox" type="checkbox" defaultChecked={false} /></td>
+//           </tr>
+//         </tbody>
+//       </table>
+//       <div><Link to={"/tasks"} className="btn btn-primary"
+//         onClick={() => { root.newTask() }}>Create Task</Link></div>
+//     </div>
+//   </div>;
+// }
 
 
 

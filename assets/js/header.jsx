@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 function Header(props) {
     let { root, session } = props;
+    console.log(session)
     let session_view;
     if (!session) {
         session_view = <div className="form-inline my-2">
@@ -26,10 +27,10 @@ function Header(props) {
             <h3><Link to={"/"}>Home</Link></h3>
         </div>
         <div className="form-inline row my-2 col-1">
-            <p><Link to={"/tasks"} onClick={api.fetch_tasks.bind(root)}>Tasks</Link></p>
+            <p><Link to={"/tasks"} onClick={api.fetch_tasks()}>Tasks</Link></p>
         </div>
         <div className="form-inline row my-2 col-1">
-            <p><Link to={"/user"} onClick={api.fetch_users.bind(root)}>Users</Link></p>
+            <p><Link to={"/user"} onClick={api.fetch_users()}>Users</Link></p>
         </div>
         <div className="col-6 float-right">
             {session_view}
