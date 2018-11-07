@@ -5,52 +5,52 @@ class TheServer {
 
     fetch_users() {
         $.ajax("/api/v1/users", {
-          method: "get",
-          dataType: "json",
-          contentType: "application/json; charset=UTF-8",
-          data: "",
-          success: (resp) => {
-            store.dispatch({
-                type: 'USER_LIST',
-                data: resp.data
-            });
-          }
+            method: "get",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: "",
+            success: (resp) => {
+                store.dispatch({
+                    type: 'USER_LIST',
+                    data: resp.data
+                });
+            }
         });
-      }
+    }
 
     fetch_tasks() {
         $.ajax("/api/v1/tasks", {
-          method: "get",
-          dataType: "json",
-          contentType: "application/json; charset=UTF-8",
-          data: "",
-          success: (resp) => {
-            store.dispatch({
-                type: 'TASK_LIST',
-                data: resp.data,
-            })
-            store.dispatch({
-                type: 'UPDATE_CURRENT_TASK',
-                data: null
-            })
-          }
+            method: "get",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: "",
+            success: (resp) => {
+                store.dispatch({
+                    type: 'UPDATE_CURRENT_TASK',
+                    data: null
+                }),
+                    store.dispatch({
+                        type: 'TASK_LIST',
+                        data: resp.data,
+                    })
+            }
         });
     }
 
     create_session(email, password) {
         $.ajax("/api/v1/sessions", {
-          method: "post",
-          dataType: "json",
-          contentType: "application/json; charset=UTF-8",
-          data: JSON.stringify({ email, password }),
-          success: (resp) => {
-            store.dispatch({
-                type: 'NEW_SESSION',
-                data: resp.data
-            })
-          }
+            method: "post",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify({ email, password }),
+            success: (resp) => {
+                store.dispatch({
+                    type: 'NEW_SESSION',
+                    data: resp.data
+                })
+            }
         });
-      }
+    }
 
     endSession() {
         store.dispatch({
@@ -61,22 +61,22 @@ class TheServer {
 
     create_user(email, password) {
         let text = JSON.stringify({
-          user: {
-            email: email,
-            password: password
-          }
+            user: {
+                email: email,
+                password: password
+            }
         });
-    
+
         $.ajax("/api/v1/users", {
-          method: "post",
-          dataType: "json",
-          contentType: "application/json; charset=UTF-8",
-          data: text,
-          success: (resp) => {
-            this.create_session(email, password)
-          }
+            method: "post",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: text,
+            success: (resp) => {
+                this.create_session(email, password)
+            }
         });
-      }
+    }
 
     saveTask(id) {
         let title = $('#titleBox').val()

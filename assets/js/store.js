@@ -45,10 +45,8 @@ function session(state = null, action) {
 }
 
 function currTask(state = null, action) {
-    
     switch (action.type) {
         case 'UPDATE_CURRENT_TASK':
-        console.log("updating", action.data)
             return action.data;
         default:
             return state;
@@ -56,7 +54,6 @@ function currTask(state = null, action) {
 }
 
 function root_reducer(state0, action) {
-
     let reducer = combineReducers({ tasks, users, session, currTask });
     let state1 = reducer(state0, action);
 
