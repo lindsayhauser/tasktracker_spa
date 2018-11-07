@@ -8,7 +8,7 @@ defmodule TaskTrackerWeb.SessionController do
     with %User{} = user <- Users.get_and_auth_user(email, password) do
       resp = %{
         data: %{
-          token: Phoenix.Token.sign(HuskyShopWeb.Endpoint, "user_id", user.id),
+          token: Phoenix.Token.sign(TaskTrackerWeb.Endpoint, "user_id", user.id),
           user_id: user.id,
         }
       }

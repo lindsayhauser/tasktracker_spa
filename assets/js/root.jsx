@@ -21,8 +21,6 @@ class Root extends React.Component {
       session: null,
       currTask: null
     };
-    this.fetch_users();
-    this.fetch_tasks();
   }
 
   fetch_users() {
@@ -46,6 +44,19 @@ class Root extends React.Component {
       data: "",
       success: (resp) => {
         let state1 = _.assign({}, this.state, { tasks: resp.data });
+        this.setState(state1);
+      }
+    });
+  }
+
+  create_session(email, password) {
+    $.ajax("/api/v1/sessions", {
+      method: "post",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify({ email, password }),
+      success: (resp) => {
+        let state1 = _.assign({}, this.state, { session: resp.data });
         this.setState(state1);
       }
     });
@@ -146,13 +157,13 @@ class Root extends React.Component {
         <div>
           <Header root={this} />
           <Route path="/" exact={true} render={() =>
-            <Home />
+            <Home root={this} />
           } />
           <Route path="/tasks" exact={true} render={() =>
             <TaskList root={this} tasks={this.state.tasks} />
           } />
           <Route path="/user" exact={true} render={() =>
-            <UserList users={this.state.users} />
+            <UserList root={this} users={this.state.users} />
           } />
           <Route path="/edittask" exact={true} render={() =>
             <EditTask root={this} task={this.state.currTask} />
@@ -166,43 +177,56 @@ class Root extends React.Component {
   }
 }
 
-function Home(_props) {
-  return <div className="row my-2">
+function Home(props) {
+  let { root } = props;
+  if (root.state.session) {
+    return <div className="row my-2">
+      <div className="col-9">
+        <h1>Welcome to TaskTracker</h1>
+      </div>
+    </div>
+  } else {
+    return <div className="row my-2">
     <div className="col-9">
       <h1>Welcome to TaskTracker</h1>
       <p><Link to={"/register"}>Register</Link></p>
     </div>
   </div>
+  }
 }
 
 function TaskList(props) {
   let { root } = props;
-  let rows = _.map(props.tasks, (tt) => <Task key={tt.id} task={tt} root={root} />);
-  return <div className="row">
-    <div className="col-12">
-      <br></br>
-      <h2>List of Tasks:</h2>
-      <div><Link to={"/newtask"} className="btn btn-primary">Create New Task</Link></div>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th hidden={true}>ID</th>
-            <th>Title</th>
-            <th>User Assigned</th>
-            <th>Description</th>
-            <th>Time Hours</th>
-            <th>Time Minutes</th>
-            <th>Completed?</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    </div>
-  </div>;
+  if (root.state.session) {
+    let rows = _.map(props.tasks, (tt) => <Task key={tt.id} task={tt} root={root} />);
+    return <div className="row">
+      <div className="col-12">
+        <br></br>
+        <h2>List of Tasks:</h2>
+        <div><Link to={"/newtask"} className="btn btn-primary">Create New Task</Link></div>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th hidden={true}>ID</th>
+              <th>Title</th>
+              <th>User Assigned</th>
+              <th>Description</th>
+              <th>Time Hours</th>
+              <th>Time Minutes</th>
+              <th>Completed?</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
+      </div>
+    </div>;
+  } else {
+    return <div> You Must Login To See Tasks! </div>
+  }
 }
 
 function Task(props) {
