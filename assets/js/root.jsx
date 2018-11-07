@@ -23,7 +23,7 @@ class Root extends React.Component {
       session: null,
       currTask: null
     };
-  this.fetch_users();
+    this.fetch_users();
   }
 
   fetch_users() {
@@ -46,7 +46,7 @@ class Root extends React.Component {
       contentType: "application/json; charset=UTF-8",
       data: "",
       success: (resp) => {
-        let state1 = _.assign({}, this.state, { tasks: resp.data });
+        let state1 = _.assign({}, this.state, { tasks: resp.data, currTask: null });
         this.setState(state1);
       }
     });
@@ -116,12 +116,12 @@ class Root extends React.Component {
       contentType: "application/json; charset=UTF-8",
       data: text,
       success: (resp) => {
+        this.fetch_tasks();
       }
     });
   }
 
   newTask() {
-    alert("new task!!")
     let title = $('#titleBox').val()
     let user = $('#userBox').val()
     let description = $('#descBoc').val()
@@ -147,7 +147,7 @@ class Root extends React.Component {
       contentType: "application/json; charset=UTF-8",
       data: text,
       success: (resp) => {
-
+        this.fetch_tasks();
       }
     });
   }
@@ -159,7 +159,8 @@ class Root extends React.Component {
         dataType: "json",
         contentType: "application/json; charset=UTF-8",
         data: "",
-        success: (task) => {
+        success: () => {
+          this.fetch_tasks();
         }
       });
     }
@@ -241,7 +242,8 @@ function EditTask(props) {
             </tr>
           </tbody>
         </table>
-        <button className="btn btn-primary" onClick={() => { root.saveTask(task.data.id) }}> Save </button>
+        <div><Link to={"/tasks"} className="btn btn-primary"
+          onClick={() => { root.saveTask(task.data.id) }}>Save</Link></div>
       </div>
     </div>;
   }
@@ -280,12 +282,13 @@ function NewTask(props) {
             </td>
             <td><input id="descBoc" /></td>
             <td><input id="hoursBox" /></td>
-            <td><input id="minutesBox" step="15" type="number"/></td>
+            <td><input id="minutesBox" step="15" type="number" /></td>
             <td><input id="completedBox" type="checkbox" defaultChecked={false} /></td>
           </tr>
         </tbody>
       </table>
-      <button className="btn btn-primary" onClick={() => { root.newTask() }}> Create Task </button>
+      <div><Link to={"/tasks"} className="btn btn-primary"
+          onClick={() => { root.newTask() }}>Create Task</Link></div>
     </div>
   </div>;
 }
