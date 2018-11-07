@@ -19,7 +19,6 @@ class Root extends React.Component {
       tasks: [],
       users: [],
       session: null,
-      editTask: null,
       currTask: null
     };
     this.fetch_users();
@@ -53,14 +52,13 @@ class Root extends React.Component {
   }
 
   saveTask(id) {
-    alert(id)
-
     let title = $('#titleBox').val()
     let user = $('#userBox').val()
     let description = $('#descBoc').val()
     let hours = $('#hoursBox').val()
     let min = $('#minutesBox').val()
-    let compl = $('#completedBox').val() == "on" ? "true": "false"
+    let compl = "false"
+    if ($('#completedBox').is(":checked")) { compl = "true" }
 
     let text = JSON.stringify({
       task: {
@@ -194,10 +192,6 @@ function EditTask(props) {
   let { root, task } = props;
 
   if (task) {
-    console.log(task);
-    console.log(task.data.id)
-    console.log(task.data.user_assigned)
-    console.log(root.state.users)
     return <div className="row">
       <div className="col-12">
         <br></br>
@@ -228,7 +222,7 @@ function EditTask(props) {
             </tr>
           </tbody>
         </table>
-        <button className="btn btn-primary" onClick={() => { root.saveTask(task.data.id)}}> Save </button>
+        <button className="btn btn-primary" onClick={() => { root.saveTask(task.data.id) }}> Save </button>
       </div>
     </div>;
   }
