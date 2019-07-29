@@ -1,70 +1,45 @@
-```ruby
-i = 2
-l = 1.1
-s = "String"
-t = true
-f = false
-n = nil
-sym = :symbol_name
-arr = [1, 2]
-hash = {1 => 2}
+# TaskTracker
 
+## Design choices:
 
-def method_name(param1, param2: 12, param3)
+Example Users in App: https://tasks3.lindsayhauser.com/
+  * `alice@example.com` with password `pass1`
 
-# This is a comment. This method will return the sum 
-# of the first and second parameters
-param1 + param2
-end
+UI Design:
 
+Registering Users / Login:
+  * When registering a user, you need to input an email and a password
+  * Emails are unique - this means you cannot have two users with the same email. If you attempt to do this, the second person who attemps to register with the same email will be prohibited from doing so.
+  * When a user has not logged in yet, they are unable to see tasks or users. However, they can log in given the login bar at the top of the page, or they can register on the home page. Once the user has logged in, the registration link disapears and a logout button appears.
 
+Creating Tasks:
+  * When creating a new tasks, you can enter the title, description, select a user (from a dropdown) and enter the time hours and minutes spent of the task and then mark the task as completed.
+  * When choosing which user to assign the task to, you can only select the users in the dropdown. The users in the dropdown contain all users who have been registered on the site. This means that you cannot assign a task to a user who isn't registered.
+  * Any user can assign any other user (including themselves) a task since this version of task tracker does not contain managers.
 
-```
-Ruby methods start with `def` and end with `end`.
-To make a method private, place the method under `private`.
+Showing Users
+  * When clicking "Users" tab, a list of users are shown.
+  * This list shows whether or not users are admins.
 
-This method will now only be able to be used within this class.
+Tasks:
+  * Clicking the "Tasks" field shows a list of all the tasks.
+  * There is a `Create New Task` that allows you to create a new task, and `Edit` and `Delete` buttons that allow you to configure tasks.
+  * Any user can create new tasks and edit and delete existing tasks.
 
-```ruby
-private
-def method_name
-...
-end
-```
+Database:
 
-```ruby
-class Book
+User
+  * A User still has an email, a password hash, an admin flag, and then a password tries and passwords last try field.
+  * Emails are unique identifiers and you cannot register two users with the same email - email is a unique key.
 
- def initialize(title, author, year)
-  @title = title # the @title is now a class variable
-  @author = author
-  @year = year
- end
- 
- def to_s
-  title.to_s
- end
- 
- def self.price
-  10.99
- end
-end
-```
-
-These are class methods. We call these like:
-
-```ruby
-Book.new("title", "author", 2000).to_s
-```
-
-This is a class method (similar to static method in Java)
-We call these like: `Book.price`
-
-Constructor
+Tasks
+  * The Tasks table has  a title, description, time_hours and time_minutes that a user spent working on the task, and a completed field.
+  * Since users work on tasks, every task is associated with a user through a user_id foreign key.
+  * You cannot have a task without a user - when a task is being created, it must be assigned to a user. The user assigned to the task can be changed.
+  * The title field is required since you cannot have a task without a title.
+  * The title field must be filled out since you cannot have a task without a title.
 
 
 
 
-
-
-
+#
